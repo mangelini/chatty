@@ -10,14 +10,4 @@ import {
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 
-export default HomeScreen = () => {
-  const logOut = async () => {
-    await auth().signOut();
-  };
-
-  return (
-    <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
-      <Button title="Log out" onPress={logOut} />
-    </SafeAreaView>
-  );
-};
+export default HomeScreen = () => {};
