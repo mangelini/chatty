@@ -64,11 +64,13 @@ export default RegisterScreen = ({navigation}) => {
     const childPath = `data/users/` + uid + `/profilePic`;
     let response;
 
-    if (image) response = await fetch(image);
-    else
+    if (image) {
+      response = await fetch(image);
+    } else {
       response = await fetch(
         'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png',
       );
+    }
     const blob = await response.blob();
     const snapshot = await storage().ref().child(childPath).put(blob);
     dUrl = await storage().ref(snapshot.metadata.fullPath).getDownloadURL();
@@ -79,6 +81,7 @@ export default RegisterScreen = ({navigation}) => {
       fullName: fullName,
       email: email,
       photoURL: dUrl,
+      uid: auth().currentUser.uid,
     });
   };
 
