@@ -31,10 +31,7 @@ export default ChatRoomHeader = ({id}) => {
   return (
     <View
       style={{
-        flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        // marginLeft: 25,
         alignItems: 'center',
       }}>
       {image && (

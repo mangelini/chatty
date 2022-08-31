@@ -1,4 +1,4 @@
-package com.chatty.newarchitecture;
+package com.uniproj.chatty.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.chatty.BuildConfig;
-import com.chatty.newarchitecture.components.MainComponentsRegistry;
-import com.chatty.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.uniproj.chatty.BuildConfig;
+import com.uniproj.chatty.newarchitecture.components.MainComponentsRegistry;
+import com.uniproj.chatty.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

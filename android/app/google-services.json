@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "279388658555",
+    "project_id": "chatty-2c4fd",
+    "storage_bucket": "chatty-2c4fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279388658555:android:1a31ba34cc3168cd08fbde",
+        "android_client_info": {
+          "package_name": "com.chatty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279388658555-bma71t1s9lc528kfqki24p3cju23fld0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcP-8KG5-r-qR66VjL-1ifM4pEAVhZlKs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279388658555-bma71t1s9lc528kfqki24p3cju23fld0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "279388658555-25j24v8t72o08sa183t61an6eit0or7l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.uniproject.chatty"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279388658555:android:c123e362c4f86c6308fbde",
+        "android_client_info": {
+          "package_name": "com.uniproj.chatty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279388658555-bdoicmaodb332aeoejqaneua2erakoab.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uniproj.chatty",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "279388658555-bma71t1s9lc528kfqki24p3cju23fld0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcP-8KG5-r-qR66VjL-1ifM4pEAVhZlKs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279388658555-bma71t1s9lc528kfqki24p3cju23fld0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "279388658555-25j24v8t72o08sa183t61an6eit0or7l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.uniproject.chatty"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

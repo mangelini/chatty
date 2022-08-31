@@ -21,7 +21,6 @@ export default AppStack = () => {
         options={({route}) => ({
           headerTitle: () => <ChatRoomHeader id={route.params?.id} />,
           headerBackTitleVisible: false,
-          // headerBackImageSource: () => <ArrowLeft />,
         })}
       />
     </Stack.Navigator>

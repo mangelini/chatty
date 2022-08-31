@@ -1,4 +1,4 @@
-package com.chatty;
+package com.uniproj.chatty;
 
 import android.os.Bundle;
 
