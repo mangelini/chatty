@@ -39,7 +39,7 @@ export default HomeScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#F3F3F3'}}>
       {chatRooms.length === 0 ? (
         <Text style={{alignSelf: 'center'}}>
           Start chatting with your friends!

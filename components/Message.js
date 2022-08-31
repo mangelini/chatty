@@ -40,7 +40,7 @@ export default Message = props => {
         isMe ? styles.rightContainer : styles.leftContainer,
       ]}>
       <View style={styles.row}>
-        <Text style={{color: isMe ? 'black' : 'white'}}>
+        <Text style={{color: isMe ? 'white' : 'black'}}>
           {message.messageText}
         </Text>
       </View>
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     margin: 10,
-    borderRadius: 10,
     maxWidth: '75%',
   },
   row: {
@@ -60,14 +59,22 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   leftContainer: {
-    backgroundColor: '#713EFE',
+    backgroundColor: '#FFFFFF',
     marginLeft: 10,
     marginRight: 'auto',
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 0,
+    borderBottomEndRadius: 10,
+    borderBottomStartRadius: 10,
   },
   rightContainer: {
-    backgroundColor: 'gray',
+    backgroundColor: '#713EFE',
     marginLeft: 'auto',
     marginRight: 10,
     alignItems: 'flex-end',
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
+    borderBottomEndRadius: 0,
+    borderBottomStartRadius: 10,
   },
 });

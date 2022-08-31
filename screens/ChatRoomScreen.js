@@ -73,7 +73,7 @@ export default ChatRoomScreen = () => {
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: 'white',
+    backgroundColor: '#F3F3F3',
     flex: 1,
   },
 });
