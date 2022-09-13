@@ -8,11 +8,35 @@ import {
   View,
   TextInput,
   Pressable,
+  Alert,
 } from 'react-native';
+
+import {box} from 'tweetnacl';
+import {encrypt, getMySecretKey, stringToUint8Array} from '../utils/crypto';
 
 export default MessageInput = ({chatRoom}) => {
   const [message, setMessage] = useState('');
   const authUser = useContext(UserContext);
+
+  const encryptMessage = async user => {
+    try {
+      const privateKey = await getMySecretKey();
+      if (!privateKey) return;
+
+      // let's create the shared key between auth user and receiver
+      const sharedKey = await box.before(
+        stringToUint8Array(user.publicKey),
+        privateKey,
+      );
+
+      // encrypt message
+      const encryptedMessage = encrypt(sharedKey, {message});
+
+      return encryptedMessage;
+    } catch (e) {
+      Alert.alert('A problem occurred while trying to encrypt message');
+    }
+  };
 
   const sendMessage = async () => {
     const chatRoomUsers = await (
@@ -21,13 +45,21 @@ export default MessageInput = ({chatRoom}) => {
 
     chatRoomUsers.forEach(async u => {
       if (u !== authUser.uid) {
+        // retrieve actual user from uid
+        const usrObj = await (
+          await firestore().collection('users').doc(u).get()
+        ).data();
+
+        // encrypt message before sending it
+        const encryptedMessage = encryptMessage(usrObj.publicKey);
+
         // create message
         const messageRef = await firestore()
           .collection('messages')
           .doc(chatRoom.id)
           .collection('messages')
           .add({
-            messageText: message,
+            messageText: encryptedMessage,
             sentAt: u,
             sentBy: authUser.uid,
             createdAt: firestore.FieldValue.serverTimestamp(),

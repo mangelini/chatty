@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {User, Lock, Image, AtSign} from 'react-native-feather';
 import RegistrationSVG from '../assets/images/register.svg';
@@ -17,6 +18,10 @@ import firestore from '@react-native-firebase/firestore';
 import InputField from '../components/InputField';
 import CustomButton from '../components/CustomButton';
 import {UserRegistered} from '../components/AppContext';
+
+import {generateKeyPair} from '../utils/crypto';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const PRIVATE_KEY = 'PRIVATE_KEY';
 
 export default RegisterScreen = ({navigation}) => {
   const {setUserRegistered} = useContext(UserRegistered);
@@ -77,12 +82,37 @@ export default RegisterScreen = ({navigation}) => {
   };
 
   const createFirestoreUser = async () => {
-    await firestore().collection('users').doc(auth().currentUser.uid).set({
-      fullName: fullName,
-      email: email,
-      photoURL: dUrl,
-      uid: auth().currentUser.uid,
-    });
+    try {
+      // generate private and public keys and save it to local storage
+      const publicKey = createKeyPair();
+      // Create user in firestore
+      await firestore().collection('users').doc(auth().currentUser.uid).set({
+        fullName: fullName,
+        email: email,
+        photoURL: dUrl,
+        uid: auth().currentUser.uid,
+        publicKey: publicKey,
+      });
+    } catch (error) {
+      Alert.alert('Something went wrong while creating user');
+    }
+  };
+
+  const createKeyPair = async () => {
+    try {
+      // generate private/public key
+      const {publicKey, secretKey} = generateKeyPair();
+
+      // save private key to Async storage
+      await AsyncStorage.setItem(PRIVATE_KEY, secretKey.toString());
+
+      return publicKey.toString();
+    } catch (error) {
+      console.log(error);
+      Alert.alert(
+        'Something went wrong while generating private and public keys',
+      );
+    }
   };
 
   const signUp = async () => {

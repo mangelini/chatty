@@ -3,11 +3,15 @@ import React, {useState, useEffect, useContext} from 'react';
 import {Pressable, StyleSheet, View, Text} from 'react-native';
 import {UserContext} from './AppContext';
 
+import {box} from 'tweetnacl';
+import {decrypt, getMySecretKey, stringToUint8Array} from '../utils/crypto';
+
 export default Message = props => {
   const [isMe, setIsMe] = useState(null);
   const {message: propMessage} = props;
   const [message, setMessage] = useState(propMessage);
   const [user, setUser] = useState();
+  const [decryptedContent, setDecryptedContent] = useState('');
 
   const authUser = useContext(UserContext);
 
@@ -17,7 +21,7 @@ export default Message = props => {
         .collection('users')
         .doc(message.sentBy)
         .get();
-      setUser(usr);
+      setUser(usr.data());
     };
 
     getUser();
@@ -28,10 +32,30 @@ export default Message = props => {
       if (!user) {
         return;
       }
-      setIsMe(user.id === authUser.uid);
+      setIsMe(user.uid === authUser.uid);
     };
     checkIfMe();
   }, [user]);
+
+  useEffect(() => {
+    if (!message?.content || !user?.publicKey) {
+      return;
+    }
+
+    const decryptMessage = async () => {
+      const myPrivateKey = await getMySecretKey();
+      if (!myPrivateKey) return;
+
+      const sharedKey = box.before(
+        stringToUint8Array(user.publicKey),
+        myPrivateKey,
+      );
+      const decrypted = decrypt(sharedKey, message.messageText);
+      setDecryptedContent(decrypted.message);
+    };
+
+    decryptMessage();
+  }, []);
 
   return (
     <Pressable
@@ -39,11 +63,13 @@ export default Message = props => {
         styles.container,
         isMe ? styles.rightContainer : styles.leftContainer,
       ]}>
-      <View style={styles.row}>
-        <Text style={{color: isMe ? 'white' : 'black'}}>
-          {message.messageText}
-        </Text>
-      </View>
+      {!!decryptedContent && (
+        <View style={styles.row}>
+          <Text style={{color: isMe ? 'white' : 'black'}}>
+            {decryptedContent}
+          </Text>
+        </View>
+      )}
     </Pressable>
   );
 };
