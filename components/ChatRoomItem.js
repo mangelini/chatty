@@ -59,6 +59,10 @@ export default ChatRoomItem = ({chatRoom}) => {
 
   useEffect(() => {
     if (recentMessage === undefined || user == undefined) return;
+    if (recentMessage.messageText === undefined) {
+      setDecryptedContent('Open chat to view image');
+      return;
+    }
 
     const decryptMessage = async () => {
       const myPrivateKey = await getMySecretKey();

@@ -1,6 +1,13 @@
 import firestore from '@react-native-firebase/firestore';
 import React, {useState, useEffect, useContext} from 'react';
-import {Pressable, StyleSheet, View, Text} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  useWindowDimensions,
+} from 'react-native';
 import {UserContext} from './AppContext';
 
 import {box} from 'tweetnacl';
@@ -14,6 +21,7 @@ export default Message = props => {
   const [receiver, setReceiver] = useState();
   const [decryptedContent, setDecryptedContent] = useState();
 
+  const {width} = useWindowDimensions();
   const authUser = useContext(UserContext);
 
   useEffect(() => {
@@ -45,11 +53,7 @@ export default Message = props => {
   }, [sender]);
 
   useEffect(() => {
-    if (
-      message.messageText === undefined ||
-      sender === undefined ||
-      receiver == undefined
-    ) {
+    if (message.messageText === undefined || receiver == undefined) {
       return;
     }
 
@@ -75,13 +79,25 @@ export default Message = props => {
         styles.container,
         isMe ? styles.rightContainer : styles.leftContainer,
       ]}>
-      {!!decryptedContent && (
-        <View style={styles.row}>
-          <Text style={{color: isMe ? 'white' : 'black'}}>
-            {decryptedContent}
-          </Text>
-        </View>
-      )}
+      <View style={styles.row}>
+        {!!message.image && (
+          <View style={{marginBottom: decryptedContent ? 10 : 0}}>
+            <Image
+              source={{uri: message.image}}
+              style={{width: width * 0.65, aspectRatio: 4 / 3}}
+              resizeMode="stretch"
+            />
+          </View>
+        )}
+
+        {!!decryptedContent && (
+          <View style={styles.row}>
+            <Text style={{color: isMe ? 'white' : 'black'}}>
+              {decryptedContent}
+            </Text>
+          </View>
+        )}
+      </View>
     </Pressable>
   );
 };
