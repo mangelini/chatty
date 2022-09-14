@@ -10,35 +10,46 @@ export default Message = props => {
   const [isMe, setIsMe] = useState(null);
   const {message: propMessage} = props;
   const [message, setMessage] = useState(propMessage);
-  const [user, setUser] = useState();
-  const [decryptedContent, setDecryptedContent] = useState('');
+  const [sender, setSender] = useState();
+  const [receiver, setReceiver] = useState();
+  const [decryptedContent, setDecryptedContent] = useState();
 
   const authUser = useContext(UserContext);
 
   useEffect(() => {
-    const getUser = async () => {
-      const usr = await firestore()
+    const getUsers = async () => {
+      const sender = await firestore()
         .collection('users')
         .doc(message.sentBy)
         .get();
-      setUser(usr.data());
+      setSender(sender.data());
+
+      const receiver = await firestore()
+        .collection('users')
+        .doc(message.sentAt)
+        .get();
+      setReceiver(receiver.data());
     };
 
-    getUser();
+    getUsers();
   }, []);
 
   useEffect(() => {
     const checkIfMe = async () => {
-      if (!user) {
+      if (!sender) {
         return;
       }
-      setIsMe(user.uid === authUser.uid);
+      setIsMe(sender.uid === authUser.uid);
     };
     checkIfMe();
-  }, [user]);
+  }, [sender]);
 
   useEffect(() => {
-    if (!message?.content || !user?.publicKey) {
+    if (
+      message.messageText === undefined ||
+      sender === undefined ||
+      receiver == undefined
+    ) {
       return;
     }
 
@@ -47,15 +58,16 @@ export default Message = props => {
       if (!myPrivateKey) return;
 
       const sharedKey = box.before(
-        stringToUint8Array(user.publicKey),
+        stringToUint8Array(receiver.publicKey),
         myPrivateKey,
       );
+
       const decrypted = decrypt(sharedKey, message.messageText);
       setDecryptedContent(decrypted.message);
     };
 
     decryptMessage();
-  }, []);
+  }, [message, receiver]);
 
   return (
     <Pressable

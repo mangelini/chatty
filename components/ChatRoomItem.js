@@ -12,9 +12,13 @@ import {UserContext} from '../components/AppContext';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 
+import {box} from 'tweetnacl';
+import {decrypt, getMySecretKey, stringToUint8Array} from '../utils/crypto';
+
 export default ChatRoomItem = ({chatRoom}) => {
   const [user, setUser] = useState(); // the display user
   const [recentMessage, setRecentMessage] = useState();
+  const [decryptedContent, setDecryptedContent] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   const authUser = useContext(UserContext);
@@ -53,6 +57,37 @@ export default ChatRoomItem = ({chatRoom}) => {
     fetchLastMessage();
   }, []);
 
+  useEffect(() => {
+    if (recentMessage === undefined || user == undefined) return;
+
+    const decryptMessage = async () => {
+      const myPrivateKey = await getMySecretKey();
+      if (!myPrivateKey) return;
+      let sharedKey;
+
+      const firestoreUsr = await (
+        await firestore().collection('users').doc(authUser.uid).get()
+      ).data();
+
+      if (recentMessage.sentBy === user.uid) {
+        sharedKey = box.before(
+          stringToUint8Array(firestoreUsr.publicKey),
+          myPrivateKey,
+        );
+      } else {
+        sharedKey = box.before(
+          stringToUint8Array(user.publicKey),
+          myPrivateKey,
+        );
+      }
+
+      const decrypted = decrypt(sharedKey, recentMessage.messageText);
+      setDecryptedContent(decrypted.message);
+    };
+
+    decryptMessage();
+  }, [recentMessage, user]);
+
   const onPress = () => {
     navigation.navigate('ChatRoomScreen', {id: chatRoom.id});
   };
@@ -73,7 +108,7 @@ export default ChatRoomItem = ({chatRoom}) => {
           <Text style={styles.text}>{time}</Text>
         </View>
         <Text numberOfLines={1} style={styles.text}>
-          {recentMessage?.messageText}
+          {decryptedContent}
         </Text>
       </View>
     </Pressable>

@@ -1,24 +1,21 @@
-import 'react-native-get-random-values';
 import {box, setPRNG} from 'tweetnacl';
 import {decode as decodeUTF8, encode as encodeUTF8} from '@stablelib/utf8';
 import {
   decode as decodeBase64,
   encode as encodeBase64,
 } from '@stablelib/base64';
+import {getRandomBytes} from 'expo-random';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-export const PRIVATE_KEY = 'PRIVATE_KEY';
+const PRIVATE_KEY = 'PRIVATE_KEY';
 
 setPRNG((x, n) => {
-  const randomBytes = crypto.getRandomValues(n);
+  const randomBytesRes = getRandomBytes(n);
   for (let i = 0; i < n; i++) {
-    x[i] = randomBytes[i];
+    x[i] = randomBytesRes[i];
   }
 });
 
-const newNonce = () => crypto.getRandomValues(box.nonceLength);
-
-// Generates a new random key pair for box and returns it as an object with publicKey and secretKey members
+const newNonce = () => getRandomBytes(box.nonceLength);
 export const generateKeyPair = () => box.keyPair();
 
 export const encrypt = (secretOrSharedKey, json, key) => {

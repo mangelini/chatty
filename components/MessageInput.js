@@ -18,14 +18,14 @@ export default MessageInput = ({chatRoom}) => {
   const [message, setMessage] = useState('');
   const authUser = useContext(UserContext);
 
-  const encryptMessage = async user => {
+  const encryptMessage = async publicKey => {
     try {
       const privateKey = await getMySecretKey();
       if (!privateKey) return;
 
       // let's create the shared key between auth user and receiver
       const sharedKey = await box.before(
-        stringToUint8Array(user.publicKey),
+        stringToUint8Array(publicKey),
         privateKey,
       );
 
@@ -34,6 +34,7 @@ export default MessageInput = ({chatRoom}) => {
 
       return encryptedMessage;
     } catch (e) {
+      console.log(e);
       Alert.alert('A problem occurred while trying to encrypt message');
     }
   };
@@ -51,7 +52,7 @@ export default MessageInput = ({chatRoom}) => {
         ).data();
 
         // encrypt message before sending it
-        const encryptedMessage = encryptMessage(usrObj.publicKey);
+        const encMessage = await encryptMessage(usrObj.publicKey);
 
         // create message
         const messageRef = await firestore()
@@ -59,7 +60,7 @@ export default MessageInput = ({chatRoom}) => {
           .doc(chatRoom.id)
           .collection('messages')
           .add({
-            messageText: encryptedMessage,
+            messageText: encMessage,
             sentAt: u,
             sentBy: authUser.uid,
             createdAt: firestore.FieldValue.serverTimestamp(),

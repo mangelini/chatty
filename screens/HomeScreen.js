@@ -23,11 +23,9 @@ export default HomeScreen = () => {
       .doc(authUser.uid)
       .get()
       .then(docSnapshot => {
-        setChatRooms([]);
-        const ids = docSnapshot.data().chatRooms;
-
-        if (ids)
-          ids.forEach(async id => {
+        if (docSnapshot.get('chatRooms') !== undefined) {
+          setChatRooms([]);
+          docSnapshot.get('chatRooms').forEach(async id => {
             const chatRoomSnap = await firestore()
               .collection('chatRooms')
               .doc(id)
@@ -35,6 +33,7 @@ export default HomeScreen = () => {
 
             setChatRooms(oldChatRooms => [...oldChatRooms, chatRoomSnap]);
           });
+        }
       });
   }, []);
 

@@ -84,7 +84,7 @@ export default RegisterScreen = ({navigation}) => {
   const createFirestoreUser = async () => {
     try {
       // generate private and public keys and save it to local storage
-      const publicKey = createKeyPair();
+      const publicKey = await createKeyPair();
       // Create user in firestore
       await firestore().collection('users').doc(auth().currentUser.uid).set({
         fullName: fullName,
@@ -109,9 +109,6 @@ export default RegisterScreen = ({navigation}) => {
       return publicKey.toString();
     } catch (error) {
       console.log(error);
-      Alert.alert(
-        'Something went wrong while generating private and public keys',
-      );
     }
   };
 
