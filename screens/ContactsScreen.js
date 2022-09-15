@@ -57,9 +57,22 @@ export default ContactsScreen = () => {
       .update({
         chatRooms: firestore.FieldValue.arrayUnion(ref.id),
       });
-
-    navigation.navigate('ChatRoomScreen', {id: ref.id});
   };
+
+  // const navigateToChatRoom = async user => {
+  //   // if chatroom already exists do not create a new one
+  //   const res = await firestore()
+  //     .collection('chatRooms')
+  //     .where('members', 'not-in', [user.uid, authUser.uid])
+  //     .get();
+
+  //   console.log(res.empty);
+
+  //   if (res.empty) {
+  //     const ref = await createChatRoom(user);
+  //     navigation.navigate('ChatRoomScreen', {id: ref.id});
+  //   } else navigation.navigate('ChatRoomScreen', {id: res.docs[0].id});
+  // };
 
   return (
     <SafeAreaView>

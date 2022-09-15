@@ -18,11 +18,10 @@ export default HomeScreen = () => {
   const [chatRooms, setChatRooms] = useState([]);
 
   useEffect(() => {
-    firestore()
+    const sub = firestore()
       .collection('users')
       .doc(authUser.uid)
-      .get()
-      .then(docSnapshot => {
+      .onSnapshot(docSnapshot => {
         if (docSnapshot.get('chatRooms') !== undefined) {
           setChatRooms([]);
           docSnapshot.get('chatRooms').forEach(async id => {
@@ -35,6 +34,8 @@ export default HomeScreen = () => {
           });
         }
       });
+
+    return () => sub();
   }, []);
 
   return (

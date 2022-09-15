@@ -4,17 +4,17 @@ import auth from '@react-native-firebase/auth';
 
 import AuthStack from './navigation/AuthStack';
 import AppStack from './navigation/AppStack';
-import {View, Text} from 'react-native';
+import {View, Text, StatusBar} from 'react-native';
 
-import {UserContext, UserRegistered} from './components/AppContext';
+import {UserContext, UserRegistering} from './components/AppContext';
 
 const App = () => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
-  const [userRegistered, setUserRegistered] = useState(false);
+  const [userRegistering, setUserRegistering] = useState(false);
   const provided = useMemo(
-    () => ({userRegistered, setUserRegistered}),
-    [userRegistered],
+    () => ({userRegistering, setUserRegistering}),
+    [userRegistering],
   );
 
   // Handle user state changes
@@ -37,16 +37,17 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      {user && userRegistered ? (
+      <StatusBar hidden={true} />
+      {user && !userRegistering ? (
         <>
           <UserContext.Provider value={user}>
             <AppStack />
           </UserContext.Provider>
         </>
       ) : (
-        <UserRegistered.Provider value={provided}>
-          <AuthStack setUserRegistered={setUserRegistered} />
-        </UserRegistered.Provider>
+        <UserRegistering.Provider value={provided}>
+          <AuthStack setUserRegistering={setUserRegistering} />
+        </UserRegistering.Provider>
       )}
     </NavigationContainer>
   );

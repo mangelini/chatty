@@ -17,22 +17,20 @@ import {User, Lock} from 'react-native-feather';
 import LoginSVG from '../assets/images/react.svg';
 import auth from '@react-native-firebase/auth';
 
-import {UserRegistered} from '../components/AppContext';
+import {UserRegistering} from '../components/AppContext';
 
 export default LoginScreen = ({navigation}) => {
-  const {setUserRegistered} = useContext(UserRegistered);
+  const {setUserRegistering, userRegistering} = useContext(UserRegistering);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [errorText, setErrorText] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const signIn = async () => {
     try {
-      setIsLoading(true);
+      setUserRegistering(true);
       await auth().signInWithEmailAndPassword(email, password);
-      setUserRegistered(true);
     } catch (error) {
       if (error.code === 'auth/invalid-email')
         setErrorText('That email address is invalid!');
@@ -45,10 +43,10 @@ export default LoginScreen = ({navigation}) => {
       setModalVisible(true);
     }
 
-    setIsLoading(false);
+    setUserRegistering(false);
   };
 
-  if (isLoading)
+  if (userRegistering)
     return (
       <SafeAreaView style={{flexGrow: 1, justifyContent: 'center'}}>
         <ActivityIndicator size={'large'} />

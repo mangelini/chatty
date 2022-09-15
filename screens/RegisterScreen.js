@@ -17,21 +17,20 @@ import firestore from '@react-native-firebase/firestore';
 
 import InputField from '../components/InputField';
 import CustomButton from '../components/CustomButton';
-import {UserRegistered} from '../components/AppContext';
+import {UserRegistering} from '../components/AppContext';
 
 import {generateKeyPair} from '../utils/crypto';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const PRIVATE_KEY = 'PRIVATE_KEY';
 
 export default RegisterScreen = ({navigation}) => {
-  const {setUserRegistered} = useContext(UserRegistered);
+  const {setUserRegistering, userRegistering} = useContext(UserRegistering);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [image, setImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   let dUrl = '';
 
   const pickImage = async () => {
@@ -116,7 +115,7 @@ export default RegisterScreen = ({navigation}) => {
     if (password === confirmPassword) {
       try {
         // Do not hang while registering user
-        setIsLoading(true);
+        setUserRegistering(true);
 
         // Create authentication user
         await signUpWithEmailAndPassword();
@@ -126,17 +125,15 @@ export default RegisterScreen = ({navigation}) => {
 
         // create firestore record for created user
         await createFirestoreUser();
-
-        setUserRegistered(true);
       } catch (error) {
         console.log(error);
       }
 
-      setIsLoading(false);
+      setUserRegistering(false);
     }
   };
 
-  if (isLoading)
+  if (userRegistering)
     return (
       <SafeAreaView style={{flexGrow: 1, justifyContent: 'center'}}>
         <ActivityIndicator size={'large'} />
