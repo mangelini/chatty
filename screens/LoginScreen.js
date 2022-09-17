@@ -8,6 +8,7 @@ import {
   Modal,
   StyleSheet,
   Pressable,
+  Alert,
 } from 'react-native';
 
 import CustomButton from '../components/CustomButton';
@@ -18,29 +19,33 @@ import LoginSVG from '../assets/images/react.svg';
 import auth from '@react-native-firebase/auth';
 
 import {UserRegistering} from '../components/AppContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default LoginScreen = ({navigation}) => {
   const {setUserRegistering, userRegistering} = useContext(UserRegistering);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
-  const [errorText, setErrorText] = useState('');
 
   const signIn = async () => {
     try {
       setUserRegistering(true);
       await auth().signInWithEmailAndPassword(email, password);
+      const keyString = await AsyncStorage.getItem(auth().currentUser.uid);
+      if (!keyString) throw new Error('privateKeyNotFound');
     } catch (error) {
       if (error.code === 'auth/invalid-email')
-        setErrorText('That email address is invalid!');
+        Alert.alert('That email address is invalid!');
       else if (error.code === 'auth/user-disabled')
-        setErrorText('User corresponding to the given email has been disabled');
+        Alert.alert('User corresponding to the given email has been disabled');
       else if (error.code === 'auth/user-not-found')
-        setErrorText('There is no user corresponding to the given email');
+        Alert.alert('There is no user corresponding to the given email');
       else if (error.code === 'auth/wrong-password')
-        setErrorText('Password is invalid for the given email');
-      setModalVisible(true);
+        Alert.alert('Password is invalid for the given email');
+      else if (error === 'privateKeyNotFound') {
+        await auth().signOut();
+        Alert.alert('User was not created in this device');
+      }
     }
 
     setUserRegistering(false);
@@ -104,47 +109,7 @@ export default LoginScreen = ({navigation}) => {
             <Text style={{color: '#703DFE', fontWeight: '700'}}> Register</Text>
           </TouchableOpacity>
         </View>
-        <Modal
-          style={{justifyContent: 'center'}}
-          backdropColor={'white'}
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={styles.modals}>
-            <Text
-              style={{
-                alignSelf: 'center',
-                width: 600,
-                textAlign: 'center',
-              }}>
-              {errorText}
-            </Text>
-            <Pressable
-              style={[styles.button]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </Modal>
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  modals: {
-    margin: 50,
-    backgroundColor: 'white',
-    elevation: 10,
-    borderRadius: 10,
-    justifyContent: 'center',
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    alignSelf: 'center',
-  },
-});

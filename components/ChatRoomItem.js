@@ -43,7 +43,7 @@ export default ChatRoomItem = ({chatRoom}) => {
 
   useEffect(() => {
     const fetchLastMessage = async () => {
-      if (!chatRoom.data().recentMessage) return;
+      if (chatRoom.data().recentMessage === undefined) return;
 
       const messageRef = await firestore()
         .collection('messages')
@@ -58,29 +58,33 @@ export default ChatRoomItem = ({chatRoom}) => {
   }, []);
 
   useEffect(() => {
-    if (recentMessage === undefined || user == undefined) return;
+    if (!recentMessage || user == undefined) return;
     if (recentMessage.messageText === undefined) {
       setDecryptedContent('Open chat to view image');
       return;
     }
 
     const decryptMessage = async () => {
-      const myPrivateKey = await getMySecretKey();
+      const myPrivateKey = await getMySecretKey(authUser.uid);
       if (!myPrivateKey) return;
       let sharedKey;
 
-      const firestoreUsr = await (
-        await firestore().collection('users').doc(authUser.uid).get()
+      const receiver = await (
+        await firestore().collection('users').doc(recentMessage.sentAt).get()
       ).data();
 
-      if (recentMessage.sentBy === user.uid) {
+      const sender = await (
+        await firestore().collection('users').doc(recentMessage.sentBy).get()
+      ).data();
+
+      if (recentMessage.sentBy === authUser.uid) {
         sharedKey = box.before(
-          stringToUint8Array(firestoreUsr.publicKey),
+          stringToUint8Array(receiver.publicKey),
           myPrivateKey,
         );
       } else {
         sharedKey = box.before(
-          stringToUint8Array(user.publicKey),
+          stringToUint8Array(sender.publicKey),
           myPrivateKey,
         );
       }
@@ -90,7 +94,7 @@ export default ChatRoomItem = ({chatRoom}) => {
     };
 
     decryptMessage();
-  }, [recentMessage, user]);
+  }, [recentMessage]);
 
   const onPress = () => {
     navigation.navigate('ChatRoomScreen', {id: chatRoom.id});

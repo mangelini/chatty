@@ -57,29 +57,40 @@ export default ContactsScreen = () => {
       .update({
         chatRooms: firestore.FieldValue.arrayUnion(ref.id),
       });
+
+    return ref;
   };
 
-  // const navigateToChatRoom = async user => {
-  //   // if chatroom already exists do not create a new one
-  //   const res = await firestore()
-  //     .collection('chatRooms')
-  //     .where('members', 'not-in', [user.uid, authUser.uid])
-  //     .get();
+  const navigateToChatRoom = async user => {
+    // if chatroom already exists do not create a new one
+    // Currently it's not possible to create firebase queries
+    // with arrays in AND logic, so we need to get firstly the
+    // chatRooms of user and then check if one of it is with the
+    // authUser
+    const ref = await firestore()
+      .collection('chatRooms')
+      .where('members', 'array-contains', user.uid)
+      .get();
 
-  //   console.log(res.empty);
+    ref.forEach(docSnap => {
+      if (docSnap.data().members.includes(authUser.uid)) {
+        // This chatroom is with authUser so we don't create a new one
+        // instead we redirect to the existing one
+        navigation.navigate('ChatRoomScreen', {id: docSnap.id});
+      }
+    });
 
-  //   if (res.empty) {
-  //     const ref = await createChatRoom(user);
-  //     navigation.navigate('ChatRoomScreen', {id: ref.id});
-  //   } else navigation.navigate('ChatRoomScreen', {id: res.docs[0].id});
-  // };
+    // The loop of chatRooms didn't find one with authUser, so we create it
+    const newRef = await createChatRoom(user);
+    navigation.navigate('ChatRoomScreen', {id: newRef.id});
+  };
 
   return (
     <SafeAreaView>
       <FlatList
         data={contacts}
         renderItem={({item}) => (
-          <ContactItem user={item} onPress={() => createChatRoom(item)} />
+          <ContactItem user={item} onPress={() => navigateToChatRoom(item)} />
         )}
       />
     </SafeAreaView>

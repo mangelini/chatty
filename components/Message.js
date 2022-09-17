@@ -58,20 +58,28 @@ export default Message = props => {
     }
 
     const decryptMessage = async () => {
-      const myPrivateKey = await getMySecretKey();
+      const myPrivateKey = await getMySecretKey(authUser.uid);
       if (!myPrivateKey) return;
+      let sharedKey;
 
-      const sharedKey = box.before(
-        stringToUint8Array(receiver.publicKey),
-        myPrivateKey,
-      );
+      if (isMe) {
+        sharedKey = box.before(
+          stringToUint8Array(receiver.publicKey),
+          myPrivateKey,
+        );
+      } else {
+        sharedKey = box.before(
+          stringToUint8Array(sender.publicKey),
+          myPrivateKey,
+        );
+      }
 
       const decrypted = decrypt(sharedKey, message.messageText);
       setDecryptedContent(decrypted.message);
     };
 
     decryptMessage();
-  }, [message, receiver]);
+  }, [message, sender, receiver]);
 
   return (
     <Pressable

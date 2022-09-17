@@ -103,7 +103,7 @@ export default RegisterScreen = ({navigation}) => {
       const {publicKey, secretKey} = generateKeyPair();
 
       // save private key to Async storage
-      await AsyncStorage.setItem(PRIVATE_KEY, secretKey.toString());
+      await AsyncStorage.setItem(auth().currentUser.uid, secretKey.toString());
 
       return publicKey.toString();
     } catch (error) {

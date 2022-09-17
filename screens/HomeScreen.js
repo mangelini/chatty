@@ -19,20 +19,11 @@ export default HomeScreen = () => {
 
   useEffect(() => {
     const sub = firestore()
-      .collection('users')
-      .doc(authUser.uid)
-      .onSnapshot(docSnapshot => {
-        if (docSnapshot.get('chatRooms') !== undefined) {
-          setChatRooms([]);
-          docSnapshot.get('chatRooms').forEach(async id => {
-            const chatRoomSnap = await firestore()
-              .collection('chatRooms')
-              .doc(id)
-              .get();
-
-            setChatRooms(oldChatRooms => [...oldChatRooms, chatRoomSnap]);
-          });
-        }
+      .collection('chatRooms')
+      .where('members', 'array-contains', authUser.uid)
+      .orderBy('modifiedAt', 'desc')
+      .onSnapshot(querySnap => {
+        if (querySnap) setChatRooms(querySnap.docs);
       });
 
     return () => sub();

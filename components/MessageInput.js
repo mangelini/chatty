@@ -42,7 +42,7 @@ export default MessageInput = ({chatRoom}) => {
 
   const encryptMessage = async publicKey => {
     try {
-      const privateKey = await getMySecretKey();
+      const privateKey = await getMySecretKey(authUser.uid);
       if (!privateKey) return;
 
       // let's create the shared key between auth user and receiver
