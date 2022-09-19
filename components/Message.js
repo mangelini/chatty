@@ -12,6 +12,7 @@ import {UserContext} from './AppContext';
 
 import {box} from 'tweetnacl';
 import {decrypt, getMySecretKey, stringToUint8Array} from '../utils/crypto';
+import colors from '../assets/colors/colors';
 
 export default Message = props => {
   const [isMe, setIsMe] = useState(null);
@@ -93,14 +94,15 @@ export default Message = props => {
             <Image
               source={{uri: message.image}}
               style={{width: width * 0.65, aspectRatio: 4 / 3}}
-              resizeMode="stretch"
+              resizeMode="cover"
             />
           </View>
         )}
 
         {!!decryptedContent && (
           <View style={styles.row}>
-            <Text style={{color: isMe ? 'white' : 'black'}}>
+            <Text
+              style={{color: colors.fontColor, fontFamily: 'Outfit-Regular'}}>
               {decryptedContent}
             </Text>
           </View>
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   leftContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.grey,
     marginLeft: 10,
     marginRight: 'auto',
     borderTopEndRadius: 10,
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 10,
   },
   rightContainer: {
-    backgroundColor: '#713EFE',
+    backgroundColor: colors.secondary,
     marginLeft: 'auto',
     marginRight: 10,
     alignItems: 'flex-end',

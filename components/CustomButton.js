@@ -1,12 +1,13 @@
 import {Text, TouchableOpacity} from 'react-native';
 import React from 'react';
+import colors from '../assets/colors/colors';
 
 export default function CustomButton({label, onPress}) {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={{
-        backgroundColor: '#703DFE',
+        backgroundColor: colors.primary,
         paddingTop: 20,
         paddingBottom: 20,
         alignSelf: 'stretch',
@@ -16,7 +17,7 @@ export default function CustomButton({label, onPress}) {
       <Text
         style={{
           textAlign: 'center',
-          fontWeight: '700',
+          fontFamily: 'Outfit-Bold',
           fontSize: 16,
           color: '#fff',
         }}>

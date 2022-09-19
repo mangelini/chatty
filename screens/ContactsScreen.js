@@ -13,6 +13,7 @@ import ContactItem from '../components/ContactItem';
 import {UserContext} from '../components/AppContext';
 import firestore from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
+import colors from '../assets/colors/colors';
 
 export default ContactsScreen = () => {
   const [contacts, setContacts] = useState([]);
@@ -86,8 +87,9 @@ export default ContactsScreen = () => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: colors.white}}>
       <FlatList
+        endFillColor={colors.white}
         data={contacts}
         renderItem={({item}) => (
           <ContactItem user={item} onPress={() => navigateToChatRoom(item)} />

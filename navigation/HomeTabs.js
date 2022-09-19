@@ -4,8 +4,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import {Settings as SettingsScreen} from '../screens/Settings';
 import ContactsScreen from '../screens/ContactsScreen';
-import {MessageCircle, Settings, Plus} from 'react-native-feather';
+import {MessageSquare, Settings, Plus} from 'react-native-feather';
 import {TouchableOpacity, View} from 'react-native';
+import colors from '../assets/colors/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,16 +14,14 @@ const CustomTabBarButton = ({children, onPress}) => (
   <TouchableOpacity
     style={{
       top: -30,
-      justifyContent: 'center',
-      alignItems: 'center',
     }}
     onPress={onPress}>
     <View
       style={{
-        width: 70,
-        height: 70,
-        borderRadius: 35,
-        backgroundColor: '#713EFE',
+        width: 55,
+        height: 55,
+        borderRadius: 5,
+        backgroundColor: colors.primary,
       }}>
       {children}
     </View>
@@ -35,19 +34,23 @@ export default HomeTabs = () => {
       initialRouteName="HomeScreen"
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#713EFE',
-        tabBarShowLabel: false,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textInputMessage,
+        tabBarLabelStyle: {
+          fontFamily: 'Outfit-Regular',
+          fontSize: 13,
+        },
         tabBarStyle: {
-          backgroundColor: '#CBCBCB',
-          borderRadius: 30,
-          height: 110,
+          backgroundColor: colors.white,
+          borderTopColor: colors.grey,
+          height: 70,
         },
       }}>
       <Tab.Screen
         name="HomeScreen"
         options={{
           tabBarIcon: ({color, size}) => (
-            <MessageCircle color={color} size={size} />
+            <MessageSquare color={color} size={size} />
           ),
         }}
         component={HomeScreen}
@@ -56,16 +59,10 @@ export default HomeTabs = () => {
         name="ContactsScreen"
         options={{
           tabBarIcon: ({focused, color, size}) => (
-            <Plus
-              color="#fff"
-              size={size}
-              style={{
-                width: 30,
-                height: 30,
-              }}
-            />
+            <Plus color={colors.white} style={{alignItems: 'center'}} />
           ),
           tabBarButton: props => <CustomTabBarButton {...props} />,
+          tabBarLabel: '',
         }}
         component={ContactsScreen}
       />

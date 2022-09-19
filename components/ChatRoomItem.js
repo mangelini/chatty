@@ -14,6 +14,7 @@ import moment from 'moment';
 
 import {box} from 'tweetnacl';
 import {decrypt, getMySecretKey, stringToUint8Array} from '../utils/crypto';
+import colors from '../assets/colors/colors';
 
 export default ChatRoomItem = ({chatRoom}) => {
   const [user, setUser] = useState(); // the display user
@@ -125,8 +126,12 @@ export default ChatRoomItem = ({chatRoom}) => {
 
 const styles = StyleSheet.create({
   container: {
+    borderRadius: 20,
+    backgroundColor: colors.secondary,
     flexDirection: 'row',
-    padding: 10,
+    padding: 20,
+    marginHorizontal: 20,
+    marginVertical: 10,
   },
   image: {
     height: 50,
@@ -135,7 +140,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   badgeContainer: {
-    backgroundColor: '#3777f0',
+    backgroundColor: colors.primary,
     width: 20,
     height: 20,
     borderRadius: 10,
@@ -160,11 +165,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   name: {
-    fontWeight: 'bold',
+    fontFamily: 'Outfit-Bold',
+    color: colors.fontColor,
     fontSize: 18,
     marginBottom: 3,
   },
   text: {
-    color: 'grey',
+    color: colors.textInputMessage,
   },
 });

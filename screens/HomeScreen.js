@@ -11,6 +11,7 @@ import {
 import {UserContext} from '../components/AppContext';
 import firestore from '@react-native-firebase/firestore';
 import ChatRoomItem from '../components/ChatRoomItem';
+import colors from '../assets/colors/colors';
 
 export default HomeScreen = () => {
   const authUser = useContext(UserContext);
@@ -30,17 +31,31 @@ export default HomeScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#F3F3F3'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.white}}>
       {chatRooms.length === 0 ? (
-        <Text style={{alignSelf: 'center'}}>
+        <Text style={{justifyContent: 'center', alignSelf: 'center'}}>
           Start chatting with your friends!
         </Text>
       ) : (
-        <FlatList
-          data={chatRooms}
-          renderItem={({item}) => <ChatRoomItem chatRoom={item} />}
-          showsVerticalScrollIndicator={false}
-        />
+        <View>
+          <Text
+            style={{
+              fontFamily: 'Outfit-Bold',
+              fontSize: 30,
+              color: colors.fontColor,
+              marginBottom: 40,
+              paddingTop: 30,
+              paddingLeft: 20,
+              textAlign: 'left',
+            }}>
+            Your ChatRooms
+          </Text>
+          <FlatList
+            data={chatRooms}
+            renderItem={({item}) => <ChatRoomItem chatRoom={item} />}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
       )}
     </SafeAreaView>
   );

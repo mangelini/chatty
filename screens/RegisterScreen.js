@@ -21,7 +21,7 @@ import {UserRegistering} from '../components/AppContext';
 
 import {generateKeyPair} from '../utils/crypto';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const PRIVATE_KEY = 'PRIVATE_KEY';
+import colors from '../assets/colors/colors';
 
 export default RegisterScreen = ({navigation}) => {
   const {setUserRegistering, userRegistering} = useContext(UserRegistering);
@@ -155,8 +155,8 @@ export default RegisterScreen = ({navigation}) => {
           <Text
             style={{
               fontSize: 40,
-              fontWeight: '700',
-              color: '#333',
+              fontFamily: 'Outfit-Bold',
+              color: colors.fontColor,
               marginBottom: 40,
               paddingTop: 30,
               textAlign: 'center',
@@ -166,25 +166,49 @@ export default RegisterScreen = ({navigation}) => {
           <InputField
             label={'Email'}
             autoCapitalize={'none'}
-            icon={<AtSign size={20} color="#666" style={{marginRight: 5}} />}
+            icon={
+              <AtSign
+                size={20}
+                color={colors.textInputMessage}
+                style={{marginRight: 5}}
+              />
+            }
             textChangedFunction={setEmail}
             inputType="email"
           />
           <InputField
             label={'Full name'}
             autoCapitalize={'none'}
-            icon={<User size={20} color="#666" style={{marginRight: 5}} />}
+            icon={
+              <User
+                size={20}
+                color={colors.textInputMessage}
+                style={{marginRight: 5}}
+              />
+            }
             textChangedFunction={setFullName}
           />
           <InputField
             label={'Password'}
-            icon={<Lock size={20} color="#666" style={{marginRight: 5}} />}
+            icon={
+              <Lock
+                size={20}
+                color={colors.textInputMessage}
+                style={{marginRight: 5}}
+              />
+            }
             inputType="password"
             textChangedFunction={setPassword}
           />
           <InputField
             label={'Confirm password'}
-            icon={<Lock size={20} color="#666" style={{marginRight: 5}} />}
+            icon={
+              <Lock
+                size={20}
+                color={colors.textInputMessage}
+                style={{marginRight: 5}}
+              />
+            }
             inputType="password"
             textChangedFunction={setConfirmPassword}
           />
@@ -199,11 +223,17 @@ export default RegisterScreen = ({navigation}) => {
             <Image
               name="calendar-outline"
               size={20}
-              color="#666"
+              color={colors.textInputMessage}
               style={{marginRight: 5}}
             />
             <TouchableOpacity onPress={pickImage}>
-              <Text style={{color: '#666', marginLeft: 5, marginTop: 5}}>
+              <Text
+                style={{
+                  color: colors.textInputMessage,
+                  marginLeft: 5,
+                  marginTop: 5,
+                  fontFamily: 'Outfit-Regular',
+                }}>
                 Pick Profile Photo
               </Text>
             </TouchableOpacity>
@@ -216,9 +246,18 @@ export default RegisterScreen = ({navigation}) => {
               justifyContent: 'center',
               marginBottom: 30,
             }}>
-            <Text>Already registered?</Text>
+            <Text
+              style={{
+                color: colors.textInputMessage,
+                fontFamily: 'Outfit-Regular',
+              }}>
+              Already registered?
+            </Text>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={{color: '#703DFE', fontWeight: '700'}}> Login</Text>
+              <Text style={{color: colors.primary, fontFamily: 'Outfit-Bold'}}>
+                {' '}
+                Login
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

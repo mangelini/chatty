@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, Pressable, Image, View, Text} from 'react-native';
+import colors from '../assets/colors/colors';
 
 export default ContactItem = ({user, onPress}) => {
   return (
@@ -14,6 +15,7 @@ export default ContactItem = ({user, onPress}) => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.white,
     flexDirection: 'row',
     paddingVertical: 20,
     paddingHorizontal: 30,
@@ -33,7 +35,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   name: {
-    fontWeight: 'bold',
+    fontFamily: 'Outfit-Bold',
+    color: colors.fontColor,
     fontSize: 18,
     marginBottom: 3,
   },

@@ -10,6 +10,7 @@ import firestore from '@react-native-firebase/firestore';
 import {UserContext} from '../components/AppContext';
 import MessageInput from '../components/MessageInput';
 import Message from '../components/Message';
+import colors from '../assets/colors/colors';
 
 export default ChatRoomScreen = () => {
   const [messages, setMessages] = useState([]);
@@ -73,7 +74,7 @@ export default ChatRoomScreen = () => {
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#F3F3F3',
+    backgroundColor: colors.white,
     flex: 1,
   },
 });

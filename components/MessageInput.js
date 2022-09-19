@@ -25,6 +25,7 @@ import {box} from 'tweetnacl';
 import {encrypt, getMySecretKey, stringToUint8Array} from '../utils/crypto';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
+import colors from '../assets/colors/colors';
 
 export default MessageInput = ({chatRoom}) => {
   const [message, setMessage] = useState('');
@@ -205,7 +206,7 @@ export default MessageInput = ({chatRoom}) => {
               style={{
                 height: 5,
                 borderRadius: 5,
-                backgroundColor: '#3777f0',
+                backgroundColor: colors.primary,
                 width: `${progress * 100}%`,
               }}
             />
@@ -221,7 +222,11 @@ export default MessageInput = ({chatRoom}) => {
         <View style={styles.inputContainer}>
           <Pressable
             onPress={() => setIsEmojiPickerOpen(currentValue => !currentValue)}>
-            <Smile size={24} color="#595959" style={styles.icon} />
+            <Smile
+              size={24}
+              color={colors.textInputMessage}
+              style={styles.icon}
+            />
           </Pressable>
 
           <TextInput
@@ -229,14 +234,23 @@ export default MessageInput = ({chatRoom}) => {
             value={message}
             onChangeText={setMessage}
             placeholder="Chatty message..."
+            placeholderTextColor={colors.textInputMessage}
           />
 
           <Pressable onPress={pickImage}>
-            <FImage size={24} color="#595959" style={styles.icon} />
+            <FImage
+              size={24}
+              color={colors.textInputMessage}
+              style={styles.icon}
+            />
           </Pressable>
 
           <Pressable onPress={takePhoto}>
-            <Camera size={24} color="#595959" style={styles.icon} />
+            <Camera
+              size={24}
+              color={colors.textInputMessage}
+              style={styles.icon}
+            />
           </Pressable>
         </View>
 
@@ -260,31 +274,34 @@ export default MessageInput = ({chatRoom}) => {
 const styles = StyleSheet.create({
   root: {
     padding: 10,
+    marginHorizontal: 5,
   },
   row: {
     flexDirection: 'row',
   },
   inputContainer: {
-    backgroundColor: 'white',
+    backgroundColor: colors.inputMessage,
     flex: 1,
     marginRight: 10,
-    borderRadius: 25,
+    borderRadius: 15,
     alignItems: 'center',
     flexDirection: 'row',
-    padding: 10,
+    padding: 5,
+    marginBottom: 5,
   },
   input: {
     flex: 1,
     marginHorizontal: 5,
+    fontFamily: 'Outfit-Bold',
   },
   icon: {
     marginHorizontal: 5,
   },
   buttonContainer: {
-    width: 40,
-    height: 40,
-    backgroundColor: '#713EFE',
-    borderRadius: 25,
+    backgroundColor: colors.primary,
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -294,7 +311,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: 'lightgray',
+    borderColor: colors.grey,
     borderRadius: 10,
   },
 });

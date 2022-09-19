@@ -20,6 +20,7 @@ import auth from '@react-native-firebase/auth';
 
 import {UserRegistering} from '../components/AppContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from '../assets/colors/colors';
 
 export default LoginScreen = ({navigation}) => {
   const {setUserRegistering, userRegistering} = useContext(UserRegistering);
@@ -71,9 +72,9 @@ export default LoginScreen = ({navigation}) => {
 
         <Text
           style={{
+            fontFamily: 'Outfit-Bold',
             fontSize: 40,
-            fontWeight: '700',
-            color: '#333',
+            color: colors.fontColor,
             marginBottom: 40,
             paddingTop: 30,
             textAlign: 'center',
@@ -84,13 +85,25 @@ export default LoginScreen = ({navigation}) => {
         <InputField
           label={'Email'}
           autoCapitalize="none"
-          icon={<User size={20} color="#666" style={{marginRight: 5}} />}
+          icon={
+            <User
+              size={20}
+              color={colors.textInputMessage}
+              style={{marginRight: 5}}
+            />
+          }
           textChangedFunction={setEmail}
         />
 
         <InputField
           label={'Password'}
-          icon={<Lock size={20} color="#666" style={{marginRight: 5}} />}
+          icon={
+            <Lock
+              size={20}
+              color={colors.textInputMessage}
+              style={{marginRight: 5}}
+            />
+          }
           inputType="password"
           fieldButtonLabel={'Forgot?'}
           fieldButtonFunction={() => {}}
@@ -104,9 +117,16 @@ export default LoginScreen = ({navigation}) => {
             justifyContent: 'center',
             marginBottom: 30,
           }}>
-          <Text>New to the app? </Text>
+          <Text style={{fontFamily: 'Outfit-Regular'}}>New to the app? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={{color: '#703DFE', fontWeight: '700'}}> Register</Text>
+            <Text
+              style={{
+                color: colors.primary,
+                fontFamily: 'Outfit-Bold',
+              }}>
+              {' '}
+              Register
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
