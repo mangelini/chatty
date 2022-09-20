@@ -2,6 +2,7 @@ import React, {useEffect, useState, useContext} from 'react';
 import {View, Image, Text, useWindowDimensions, Pressable} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {UserContext} from './AppContext';
+import colors from '../assets/colors/colors';
 
 export default ChatRoomHeader = ({id}) => {
   const {width} = useWindowDimensions();
@@ -39,10 +40,18 @@ export default ChatRoomHeader = ({id}) => {
           source={{
             uri: image,
           }}
-          style={{width: 35, height: 35, borderRadius: 30}}
+          style={{width: 45, height: 45, borderRadius: 30}}
         />
       )}
-      <Text style={{fontWeight: 'bold', marginLeft: 10}}>{fullName}</Text>
+      <Text
+        style={{
+          fontFamily: 'Outfit-Bold',
+          fontSize: 25,
+          marginLeft: 10,
+          color: colors.fontColor,
+        }}>
+        {fullName}
+      </Text>
     </View>
   );
 };

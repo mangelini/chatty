@@ -4,6 +4,7 @@ import HomeTabs from './HomeTabs';
 import ChatRoomScreen from '../screens/ChatRoomScreen';
 import ChatRoomHeader from '../components/ChatRoomHeader';
 import {ArrowLeft} from 'react-native-feather';
+import {Image, TouchableOpacity} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,8 +20,14 @@ export default AppStack = () => {
         name="ChatRoomScreen"
         component={ChatRoomScreen}
         options={({route}) => ({
+          headerTitleAlign: 'center',
           headerTitle: () => <ChatRoomHeader id={route.params?.id} />,
-          headerBackTitleVisible: false,
+          headerShadowVisible: false,
+          // headerLeft: () => (
+          //   <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          //     <ArrowLeft />
+          //   </TouchableOpacity>
+          // ),
         })}
       />
     </Stack.Navigator>

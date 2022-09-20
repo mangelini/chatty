@@ -62,7 +62,7 @@ export default HomeTabs = () => {
             <Plus color={colors.white} style={{alignItems: 'center'}} />
           ),
           tabBarButton: props => <CustomTabBarButton {...props} />,
-          tabBarLabel: '',
+          // tabBarLabel: '',
         }}
         component={ContactsScreen}
       />
