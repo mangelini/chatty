@@ -87,14 +87,28 @@ export default ContactsScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: colors.white}}>
-      <FlatList
-        endFillColor={colors.white}
-        data={contacts}
-        renderItem={({item}) => (
-          <ContactItem user={item} onPress={() => navigateToChatRoom(item)} />
-        )}
-      />
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.white}}>
+      <View>
+        <Text
+          style={{
+            fontFamily: 'Outfit-Bold',
+            fontSize: 30,
+            color: colors.fontColor,
+            marginBottom: 40,
+            paddingTop: 30,
+            paddingLeft: 20,
+            textAlign: 'left',
+          }}>
+          Create ChatRoom
+        </Text>
+        <FlatList
+          endFillColor={colors.white}
+          data={contacts}
+          renderItem={({item}) => (
+            <ContactItem user={item} onPress={() => navigateToChatRoom(item)} />
+          )}
+        />
+      </View>
     </SafeAreaView>
   );
 };

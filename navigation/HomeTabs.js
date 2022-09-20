@@ -1,37 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import HomeScreen from '../screens/HomeScreen';
-import {Settings as SettingsScreen} from '../screens/Settings';
 import ContactsScreen from '../screens/ContactsScreen';
-import {MessageSquare, Settings, Plus} from 'react-native-feather';
+import {MessageSquare, LogOut, Plus} from 'react-native-feather';
 import {TouchableOpacity, View} from 'react-native';
 import colors from '../assets/colors/colors';
+import auth from '@react-native-firebase/auth';
 
 const Tab = createBottomTabNavigator();
-
-const CustomTabBarButton = ({children, onPress}) => (
-  <TouchableOpacity
-    style={{
-      top: -30,
-    }}
-    onPress={onPress}>
-    <View
-      style={{
-        width: 55,
-        height: 55,
-        borderRadius: 5,
-        backgroundColor: colors.primary,
-      }}>
-      {children}
-    </View>
-  </TouchableOpacity>
-);
 
 export default HomeTabs = () => {
   return (
     <Tab.Navigator
-      initialRouteName="HomeScreen"
+      initialRouteName="Home"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
@@ -47,7 +29,7 @@ export default HomeTabs = () => {
         },
       }}>
       <Tab.Screen
-        name="HomeScreen"
+        name="Home"
         options={{
           tabBarIcon: ({color, size}) => (
             <MessageSquare color={color} size={size} />
@@ -59,20 +41,29 @@ export default HomeTabs = () => {
         name="ContactsScreen"
         options={{
           tabBarIcon: ({focused, color, size}) => (
-            <Plus color={colors.white} style={{alignItems: 'center'}} />
+            <Plus color={color} size={size} />
           ),
-          tabBarButton: props => <CustomTabBarButton {...props} />,
-          // tabBarLabel: '',
+          tabBarLabel: 'Contacts',
         }}
         component={ContactsScreen}
       />
       <Tab.Screen
-        name="Settings"
+        name="Sign Out"
         options={{
-          tabBarIcon: ({color, size}) => <Settings color={color} size={size} />,
+          tabBarIcon: ({color, size}) => <LogOut color={color} size={size} />,
         }}
-        component={SettingsScreen}
+        component={SignOut}
       />
     </Tab.Navigator>
   );
+};
+
+const SignOut = () => {
+  useEffect(() => {
+    const signOut = async () => {
+      await auth().signOut();
+    };
+
+    signOut();
+  }, []);
 };

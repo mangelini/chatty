@@ -23,11 +23,6 @@ export default AppStack = () => {
           headerTitleAlign: 'center',
           headerTitle: () => <ChatRoomHeader id={route.params?.id} />,
           headerShadowVisible: false,
-          // headerLeft: () => (
-          //   <TouchableOpacity onPress={() => props.navigation.goBack()}>
-          //     <ArrowLeft />
-          //   </TouchableOpacity>
-          // ),
         })}
       />
     </Stack.Navigator>
