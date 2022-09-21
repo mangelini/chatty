@@ -21,10 +21,13 @@ export default HomeScreen = () => {
   useEffect(() => {
     const sub = firestore()
       .collection('chatRooms')
-      .where('members', 'array-contains', authUser.uid)
       .orderBy('modifiedAt', 'desc')
       .onSnapshot(querySnap => {
-        if (querySnap) setChatRooms(querySnap.docs);
+        setChatRooms([])
+        querySnap.forEach(doc => {
+          if(doc.data().members.includes(authUser.uid))
+            setChatRooms(oldChats => [...oldChats, doc])
+        })
       });
 
     return () => sub();

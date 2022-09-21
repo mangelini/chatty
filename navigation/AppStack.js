@@ -3,7 +3,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeTabs from './HomeTabs';
 import ChatRoomScreen from '../screens/ChatRoomScreen';
 import ChatRoomHeader from '../components/ChatRoomHeader';
-import {ArrowLeft} from 'react-native-feather';
 import {Image, TouchableOpacity} from 'react-native';
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +22,7 @@ export default AppStack = () => {
           headerTitleAlign: 'center',
           headerTitle: () => <ChatRoomHeader id={route.params?.id} />,
           headerShadowVisible: false,
+          headerBackTitleVisible: false,
         })}
       />
     </Stack.Navigator>

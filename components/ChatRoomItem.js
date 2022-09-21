@@ -26,6 +26,25 @@ export default ChatRoomItem = ({chatRoom}) => {
 
   const navigation = useNavigation();
 
+  const dateToFromNowDaily = (myDate) => {
+    // get from-now for this date
+    var fromNow = moment(myDate).fromNow();
+
+    // ensure the date is displayed with today and yesterday
+    return moment(myDate).calendar( null, {
+        // when the date is closer, specify custom values
+        lastWeek: '[Last] dddd',
+        lastDay:  '[Yesterday]',
+        sameDay:  '[Today]',
+        nextDay:  '[Tomorrow]',
+        nextWeek: 'dddd',
+        // when the date is further away, use from-now functionality             
+        sameElse: function () {
+            return "[" + fromNow + "]";
+        }
+    });
+  }
+
   useEffect(() => {
     // fetch receiver user
     firestore()
@@ -52,11 +71,12 @@ export default ChatRoomItem = ({chatRoom}) => {
         .collection('messages')
         .doc(chatRoom.data().recentMessage)
         .get();
+
       setRecentMessage(messageRef.data());
     };
 
     fetchLastMessage();
-  }, []);
+  }, [recentMessage]);
 
   useEffect(() => {
     if (!recentMessage || user == undefined) return;
@@ -105,7 +125,9 @@ export default ChatRoomItem = ({chatRoom}) => {
     return <ActivityIndicator />;
   }
 
-  const time = moment(recentMessage?.createdAt).from(moment());
+  // const time = moment.unix(recentMessage?.createdAt).format('HH:mm');
+  const time = moment(recentMessage?.createdAt);
+
 
   return (
     <Pressable onPress={onPress} style={styles.container}>
@@ -114,7 +136,7 @@ export default ChatRoomItem = ({chatRoom}) => {
       <View style={styles.rightContainer}>
         <View style={styles.row}>
           <Text style={styles.name}>{user?.fullName}</Text>
-          <Text style={styles.text}>{time}</Text>
+          <Text style={styles.text}>{dateToFromNowDaily(time)}</Text>
         </View>
         <Text numberOfLines={1} style={styles.text}>
           {decryptedContent}

@@ -9,6 +9,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {UserContext} from './AppContext';
+import moment from 'moment';
 
 import {box} from 'tweetnacl';
 import {decrypt, getMySecretKey, stringToUint8Array} from '../utils/crypto';
@@ -82,6 +83,8 @@ export default Message = props => {
     decryptMessage();
   }, [message, sender, receiver]);
 
+  const time = moment.unix(message?.createdAt).format('HH:mm');
+
   return (
     <Pressable
       style={[
@@ -100,11 +103,16 @@ export default Message = props => {
         )}
 
         {!!decryptedContent && (
-          <View style={styles.row}>
-            <Text
-              style={{color: colors.fontColor, fontFamily: 'Outfit-Regular'}}>
-              {decryptedContent}
-            </Text>
+          <View style={styles.column}>
+            <View style={styles.row}>
+              <Text
+                style={{color: colors.fontColor, fontFamily: 'Outfit-Regular', fontSize: 16}}>
+                {decryptedContent}
+              </Text>
+            </View>
+            <View style={{alignItems: 'flex-end'}}>
+              <Text style={{fontFamily: 'Outfit-Regular', fontSize: 12, color: colors.textInputMessage}}>{time}</Text>
+            </View>
           </View>
         )}
       </View>
@@ -117,6 +125,9 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     maxWidth: '75%',
+  },
+  column: {
+    flexDirection: 'column',
   },
   row: {
     flexDirection: 'row',
