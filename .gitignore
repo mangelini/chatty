@@ -62,3 +62,4 @@ buck-out/
 /ios/Pods/
 /vendor/bundle/
 .log/ti-622.log
+ios/chatty.xcodeproj/project.pbxproj

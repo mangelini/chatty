@@ -5,10 +5,8 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Modal,
-  StyleSheet,
-  Pressable,
   Alert,
+  ScrollView,
 } from 'react-native';
 
 import CustomButton from '../components/CustomButton';
@@ -61,7 +59,7 @@ export default LoginScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={{paddingHorizontal: 25, justifyContent: 'flex-start'}}>
+      <ScrollView style={{paddingHorizontal: 25}}>
         <View style={{alignItems: 'center'}}>
           <LoginSVG
             height={250}
@@ -129,7 +127,7 @@ export default LoginScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
