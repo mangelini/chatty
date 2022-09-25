@@ -8,8 +8,6 @@ export default function InputField({
   inputType,
   keyboardType,
   textChangedFunction,
-  fieldButtonLabel,
-  fieldButtonFunction,
   autoCapitalize,
 }) {
   return (
@@ -27,7 +25,12 @@ export default function InputField({
           placeholder={label}
           placeholderTextColor={colors.textInputMessage}
           keyboardType={keyboardType}
-          style={{flex: 1, paddingVertical: 0, fontFamily: 'Outfit-Regular'}}
+          style={{
+            flex: 1,
+            paddingVertical: 0,
+            fontFamily: 'Outfit-Regular',
+            color: colors.textInputMessage,
+          }}
           secureTextEntry={true}
           onChangeText={textChangedFunction}
         />
@@ -37,15 +40,15 @@ export default function InputField({
           placeholder={label}
           placeholderTextColor={colors.textInputMessage}
           keyboardType={keyboardType}
-          style={{flex: 1, paddingVertical: 0, fontFamily: 'Outfit-Regular'}}
+          style={{
+            flex: 1,
+            paddingVertical: 0,
+            fontFamily: 'Outfit-Regular',
+            color: colors.textInputMessage,
+          }}
           onChangeText={textChangedFunction}
         />
       )}
-      <TouchableOpacity onPress={fieldButtonFunction}>
-        <Text style={{color: colors.primary, fontFamily: 'Outfit-Bold'}}>
-          {fieldButtonLabel}
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 }

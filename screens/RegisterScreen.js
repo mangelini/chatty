@@ -141,15 +141,15 @@ export default RegisterScreen = ({navigation}) => {
     );
 
   return (
-    <SafeAreaView style={{flexGrow: 1, justifyContent: 'center'}}>
+    <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{paddingHorizontal: 25}}>
         <View style={{alignItems: 'center'}}>
           <RegistrationSVG
-            height={180}
-            width={180}
-            style={{transform: [{rotate: '-5deg'}]}}
+            height={230}
+            width={230}
+            // style={{transform: [{rotate: '-5deg'}]}}
           />
 
           <Text

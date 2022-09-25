@@ -12,8 +12,8 @@ import {
 import CustomButton from '../components/CustomButton';
 import InputField from '../components/InputField';
 
-import {User, Lock} from 'react-native-feather';
-import LoginSVG from '../assets/images/react.svg';
+import {User, Lock, Eye, EyeOff} from 'react-native-feather';
+import LoginSVG from '../assets/images/login.svg';
 import auth from '@react-native-firebase/auth';
 
 import {UserRegistering} from '../components/AppContext';
@@ -70,14 +70,10 @@ export default LoginScreen = ({navigation}) => {
     );
   } else {
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
         <ScrollView style={{paddingHorizontal: 25}}>
           <View style={{alignItems: 'center'}}>
-            <LoginSVG
-              height={250}
-              width={250}
-              style={{transform: [{rotate: '-5deg'}]}}
-            />
+            <LoginSVG height={230} width={230} />
           </View>
 
           <Text
@@ -115,8 +111,6 @@ export default LoginScreen = ({navigation}) => {
               />
             }
             inputType="password"
-            fieldButtonLabel={'Forgot?'}
-            fieldButtonFunction={() => {}}
             textChangedFunction={setPassword}
           />
           <View style={{paddingTop: 30}} />

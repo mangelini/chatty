@@ -32,6 +32,7 @@ export default MessageInput = ({chatRoom}) => {
   const [image, setImage] = useState('');
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const authUser = useContext(UserContext);
 
@@ -93,6 +94,8 @@ export default MessageInput = ({chatRoom}) => {
   };
 
   const sendMessage = async () => {
+    setIsLoading(true);
+
     const chatRoomUsers = await (
       await firestore().collection('chatRooms').doc(chatRoom.id).get()
     ).data().members;
@@ -124,10 +127,10 @@ export default MessageInput = ({chatRoom}) => {
           recentMessage: messageRef.id,
           modifiedAt: firestore.FieldValue.serverTimestamp(),
         });
-
-        resetFields();
       }
     });
+    setIsLoading(false);
+    resetFields();
   };
 
   const sendImage = async () => {
@@ -254,7 +257,10 @@ export default MessageInput = ({chatRoom}) => {
           </Pressable>
         </View>
 
-        <Pressable onPressOut={onPress} style={styles.buttonContainer}>
+        <Pressable
+          disabled={isLoading}
+          onPressOut={onPress}
+          style={styles.buttonContainer}>
           <Send size={24} color="white" />
         </Pressable>
       </View>
