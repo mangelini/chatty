@@ -4,7 +4,7 @@ import auth from '@react-native-firebase/auth';
 
 import AuthStack from './navigation/AuthStack';
 import AppStack from './navigation/AppStack';
-import {View, Text, StatusBar} from 'react-native';
+import {SafeAreaView, ActivityIndicator, StatusBar} from 'react-native';
 
 import {UserContext, UserRegistering} from './components/AppContext';
 
@@ -30,9 +30,9 @@ const App = () => {
 
   if (initializing)
     return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
+      <SafeAreaView style={{flexGrow: 1, justifyContent: 'center'}}>
+        <ActivityIndicator size={'large'} />
+      </SafeAreaView>
     );
 
   return (

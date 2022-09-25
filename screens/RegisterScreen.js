@@ -135,7 +135,7 @@ export default RegisterScreen = ({navigation}) => {
 
   if (userRegistering)
     return (
-      <SafeAreaView style={{flexGrow: 1, justifyContent: 'center'}}>
+      <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
         <ActivityIndicator size={'large'} />
       </SafeAreaView>
     );
