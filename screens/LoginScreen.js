@@ -58,8 +58,8 @@ export default LoginScreen = ({navigation}) => {
         await auth().signOut();
         Alert.alert('Credentials Error', 'User was not created in this device');
       }
-      setUserRegistering(false);
     }
+    setUserRegistering(false);
   };
 
   if (userRegistering) {

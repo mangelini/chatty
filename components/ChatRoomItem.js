@@ -26,24 +26,25 @@ export default ChatRoomItem = ({chatRoom}) => {
 
   const navigation = useNavigation();
 
-  const dateToFromNowDaily = (myDate) => {
-    // get from-now for this date
-    var fromNow = moment(myDate).fromNow();
+  const dynamicDate = time => {
+    const createdAt = moment(time);
+    const today = moment();
+    const oneWeekOld = moment().subtract(6, 'days').startOf('day');
 
-    // ensure the date is displayed with today and yesterday
-    return moment(myDate).calendar( null, {
-        // when the date is closer, specify custom values
-        lastWeek: '[Last] dddd',
-        lastDay:  '[Yesterday]',
-        sameDay:  '[Today]',
-        nextDay:  '[Tomorrow]',
-        nextWeek: 'dddd',
-        // when the date is further away, use from-now functionality             
-        sameElse: function () {
-            return "[" + fromNow + "]";
-        }
-    });
-  }
+    const yesterday = moment(today).subtract(1, 'day');
+
+    if (moment(createdAt).isSame(today, 'day')) {
+      return createdAt.format('HH:mm');
+    }
+
+    if (moment(createdAt).isSame(yesterday, 'day')) {
+      return 'Yesterday';
+    }
+    // if (createdAt.isAfter(oneWeekOld)) {
+    //   return moment(createdAt).format('dddd');
+    // }
+    return moment(createdAt).format('DD/MM/YYYY');
+  };
 
   useEffect(() => {
     // fetch receiver user
@@ -126,8 +127,6 @@ export default ChatRoomItem = ({chatRoom}) => {
   }
 
   // const time = moment.unix(recentMessage?.createdAt).format('HH:mm');
-  const time = moment(recentMessage?.createdAt);
-
 
   return (
     <Pressable onPress={onPress} style={styles.container}>
@@ -136,7 +135,9 @@ export default ChatRoomItem = ({chatRoom}) => {
       <View style={styles.rightContainer}>
         <View style={styles.row}>
           <Text style={styles.name}>{user?.fullName}</Text>
-          <Text style={styles.text}>{dateToFromNowDaily(time)}</Text>
+          <Text style={styles.text}>
+            {dynamicDate(recentMessage?.createdAt.toDate())}
+          </Text>
         </View>
         <Text numberOfLines={1} style={styles.text}>
           {decryptedContent}
