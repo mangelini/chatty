@@ -43,24 +43,10 @@ export default RegisterScreen = ({navigation}) => {
   };
 
   const signUpWithEmailAndPassword = async () => {
-    try {
-      const userCredentials = await auth().createUserWithEmailAndPassword(
-        email,
-        password,
-      );
-
-      await userCredentials.user.updateProfile({
-        displayName: fullName,
-      });
-    } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-    }
+    await auth().createUserWithEmailAndPassword(
+      email,
+      password,
+    );
   };
 
   const uploadImage = async () => {
@@ -81,34 +67,28 @@ export default RegisterScreen = ({navigation}) => {
   };
 
   const createFirestoreUser = async () => {
-    try {
-      // generate private and public keys and save it to local storage
-      const publicKey = await createKeyPair();
-      // Create user in firestore
-      await firestore().collection('users').doc(auth().currentUser.uid).set({
-        fullName: fullName,
-        email: email,
-        photoURL: dUrl,
-        uid: auth().currentUser.uid,
-        publicKey: publicKey,
-      });
-    } catch (error) {
-      Alert.alert('Something went wrong while creating user');
-    }
+    // generate private and public keys and save it to local storage
+    const publicKey = await createKeyPair();
+    // Create user in firestore
+    await firestore().collection('users').doc(auth().currentUser.uid).set({
+      fullName: fullName,
+      email: email,
+      photoURL: dUrl,
+      uid: auth().currentUser.uid,
+      publicKey: publicKey,
+    });
+
+    setUserRegistering(false);
   };
 
   const createKeyPair = async () => {
-    try {
-      // generate private/public key
-      const {publicKey, secretKey} = generateKeyPair();
+    // generate private/public key
+    const {publicKey, secretKey} = generateKeyPair();
 
-      // save private key to Async storage
-      await AsyncStorage.setItem(auth().currentUser.uid, secretKey.toString());
+    // save private key to Async storage
+    await AsyncStorage.setItem(auth().currentUser.uid, secretKey.toString());
 
-      return publicKey.toString();
-    } catch (error) {
-      console.log(error);
-    }
+    return publicKey.toString();
   };
 
   const signUp = async () => {
@@ -126,10 +106,9 @@ export default RegisterScreen = ({navigation}) => {
         // create firestore record for created user
         await createFirestoreUser();
       } catch (error) {
-        console.log(error);
+        setUserRegistering(false);
+        Alert.alert('Registration error', error)
       }
-
-      setUserRegistering(false);
     }
   };
 
