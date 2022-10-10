@@ -121,7 +121,7 @@ export default LoginScreen = ({navigation}) => {
               justifyContent: 'center',
               marginBottom: 30,
             }}>
-            <Text style={{fontFamily: 'Outfit-Regular'}}>New to the app? </Text>
+            <Text style={{fontFamily: 'Outfit-Regular', color: colors.textInputMessage}}>New to the app? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Register')}>
               <Text
                 style={{
